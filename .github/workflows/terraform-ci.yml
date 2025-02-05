@@ -1,0 +1,65 @@
+name: terraform-ci.yml
+on: 
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  WORKFLOW_BASE_PATH: '$GITHUB_WORKSPACE'
+
+jobs:
+  lint-job:
+    name: Lint repository code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run super-linter
+        uses: github/super-linter@v7
+        env:
+          DEFAULT_BRANCH: "main"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false
+          FIX_JAVASCRIPT_PRETTIER: true
+  
+  terraform:
+    name: "Terraform build/integrate"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/GitHubActionsInfrastructure
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NOdeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.4
+
+      - name: Terrformm init
+        run: terraform init
+
+      - name: Terrform validate
+        id: validate
+        run: terraform plan -no-color
