@@ -30,6 +30,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_JSCPD: false
           FIX_JAVASCRIPT_PRETTIER: true
+          FIX_YAML_PRETTIER: true
 
   terraform:
     name: "Terraform build/integrate"
