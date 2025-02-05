@@ -1,10 +1,10 @@
-name: terraform-ci.yml
+name: terraform-cd
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_run:
+      workflows: ["terraform-ci"]
+      types:
+        - completed
 
 env:
   WORKFLOW_BASE_PATH: "$GITHUB_WORKSPACE"
@@ -14,6 +14,7 @@ permissions: read-all
 jobs:
   terraform:
     name: "Terraform deploy"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     defaults:
       run:

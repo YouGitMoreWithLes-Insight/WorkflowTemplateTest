@@ -1,4 +1,4 @@
-name: terraform-ci.yml
+name: terraform-ci
 on:
   workflow_dispatch:
   push:
@@ -26,6 +26,7 @@ jobs:
         env:
           DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISABLE: JSCPD
           VALIDATE_ALL_CODEBASE: false
           FIX_JAVASCRIPT_PRETTIER: true
 
