@@ -28,6 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE: JSCPD
           VALIDATE_ALL_CODEBASE: false
+          VALIDATE_JSCPD: false
           FIX_JAVASCRIPT_PRETTIER: true
 
   terraform:
