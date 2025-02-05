@@ -1,13 +1,13 @@
 name: terraform-ci.yml
-on: 
+on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
-  WORKFLOW_BASE_PATH: '$GITHUB_WORKSPACE'
+  WORKFLOW_BASE_PATH: "$GITHUB_WORKSPACE"
 
 permissions: read-all
 
@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: false
           FIX_JAVASCRIPT_PRETTIER: true
-  
+
   terraform:
     name: "Terraform build/integrate"
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
