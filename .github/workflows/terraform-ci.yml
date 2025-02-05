@@ -13,7 +13,7 @@ jobs:
   lint-job:
     name: Lint repository code
     runs-on: ubuntu-latest
-    permissions:
+    permissions: read-all
       contents: write
       statuses: read
     steps:
