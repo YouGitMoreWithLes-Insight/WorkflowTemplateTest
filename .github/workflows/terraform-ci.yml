@@ -9,11 +9,14 @@ on:
 env:
   WORKFLOW_BASE_PATH: '$GITHUB_WORKSPACE'
 
+permissions: read-all
+
 jobs:
   lint-job:
     name: Lint repository code
     runs-on: ubuntu-latest
-    permissions: read-all
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

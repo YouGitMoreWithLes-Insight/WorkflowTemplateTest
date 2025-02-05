@@ -9,6 +9,8 @@ on:
 env:
   WORKFLOW_BASE_PATH: '$GITHUB_WORKSPACE'
 
+permissions: read-all
+
 jobs:
   terraform:
     name: "Terraform deploy"
