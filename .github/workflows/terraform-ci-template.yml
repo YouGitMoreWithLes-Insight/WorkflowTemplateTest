@@ -12,7 +12,7 @@ jobs:
   call-workflow-passing-data:
     uses: YouGitMoreWithLes-Insight/.github/.github/workflows/lint.yml@main
     with:
-      branch: $default_branch
+      branch: main
     secrets: inherit
     permissions:
       contents: write
