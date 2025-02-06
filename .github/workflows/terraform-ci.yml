@@ -19,7 +19,7 @@ jobs:
       contents: write
 
   terraform:
-    uses: YouGitMoreWithLes-Insight/.github/workflow-templates/terrform-ci.yml
+    uses: YouGitMoreWithLes-Insight/.github/workflow-templates/terrform-ci.yml@main
     secrets: inherit
 
   # lint-job:
