@@ -9,7 +9,7 @@ on:
 permissions: read-all
 
 jobs:
-  call-workflow-passing-data:
+  linter:
     name: Linter workflow
     uses: YouGitMoreWithLes-Insight/.github/.github/workflows/lint.yml@main
     with:
@@ -17,6 +17,10 @@ jobs:
     secrets: inherit
     permissions:
       contents: write
+
+  terraform:
+    uses: YouGitMoreWithLes-Insight/.github/workflow-templates/terrform-ci.yml
+    secrets: inherit
 
   # lint-job:
   #   name: Lint repository code
