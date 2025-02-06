@@ -10,6 +10,7 @@ permissions: read-all
 
 jobs:
   call-workflow-passing-data:
+    name: Linter workflow
     uses: YouGitMoreWithLes-Insight/.github/.github/workflows/lint.yml@main
     with:
       branch: main
