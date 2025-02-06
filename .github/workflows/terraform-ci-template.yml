@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions: read-all
+
 jobs:
   call-workflow-passing-data:
     uses: YouGitMoreWithLes-Insight/.github/.github/workflows/lint.yml@main
