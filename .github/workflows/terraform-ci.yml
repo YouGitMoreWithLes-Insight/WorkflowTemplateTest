@@ -1,66 +1,66 @@
-name: terraform-ci
-on:
-  workflow_dispatch:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+# name: terraform-ci
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches: ["main"]
+#   pull_request:
+#     branches: ["main"]
 
-env:
-  WORKFLOW_BASE_PATH: "$GITHUB_WORKSPACE"
+# env:
+#   WORKFLOW_BASE_PATH: "$GITHUB_WORKSPACE"
 
-permissions: read-all
+# permissions: read-all
 
-jobs:
-  lint:
-    name: Lint repository code
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# jobs:
+#   lint:
+#     name: Lint repository code
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Run super-linter
-        uses: github/super-linter@v7
-        env:
-          DEFAULT_BRANCH: "main"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISABLE: JSCPD
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_JSCPD: false
-          FIX_JAVASCRIPT_PRETTIER: true
-          FIX_YAML_PRETTIER: true
+#       - name: Run super-linter
+#         uses: github/super-linter@v7
+#         env:
+#           DEFAULT_BRANCH: "main"
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           DISABLE: JSCPD CHECKOV
+#           VALIDATE_ALL_CODEBASE: false
+#           VALIDATE_JSCPD: false
+#           FIX_JAVASCRIPT_PRETTIER: true
+#           FIX_YAML_PRETTIER: true
 
-  terraform:
-    name: "Terraform build/integrate"
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    defaults:
-      run:
-        working-directory: ./src/GitHubActionsInfrastructure
+#   terraform:
+#     name: "Terraform build/integrate"
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#     defaults:
+#       run:
+#         working-directory: ./src/InfrastructureAsCode
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}          
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          auth-type: SERVICE_PRINCIPAL
+#       - name: Azure login
+#         uses: azure/login@v2
+#         with:
+#           client-id: ${{ secrets.AZURE_CLIENT_ID }}
+#           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}          
+#           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+#           auth-type: SERVICE_PRINCIPAL
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.10.4
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v3
+#         with:
+#           terraform_version: 1.10.4
 
-      - name: Terrformm init
-        run: terraform init -no-color
+#       - name: Terrformm init
+#         run: terraform init -no-color
 
-      - name: Terrform validate
-        id: validate
-        run: terraform validate -no-color
+#       - name: Terrform validate
+#         id: validate
+#         run: terraform validate -no-color

@@ -8,7 +8,7 @@ on:
 
 jobs:
   call-workflow-passing-data:
-    uses: YouGitMoreWithLes-Insight/.github/workflow-templates/lint.yml
+    uses: YouGitMoreWithLes-Insight/.github/workflow-templates/lint.yml@main
     with:
       branch: $default_branch
     secrets: inherit
