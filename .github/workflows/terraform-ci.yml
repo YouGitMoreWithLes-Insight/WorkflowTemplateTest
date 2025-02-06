@@ -21,6 +21,8 @@ jobs:
   terraform:
     uses: YouGitMoreWithLes-Insight/.github/.github/workflows/terraform-ci.yml@main
     secrets: inherit
+    permissions:
+      id-token: write
 
   # lint-job:
   #   name: Lint repository code
