@@ -1,0 +1,21 @@
+name: dotnet-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions: read-all
+
+jobs:
+  dotnet-build:
+    name: Dotnet build workflow
+    uses: ./.github/workflows/dotnet-ci.yml
+    secrets: inherit
+    with:
+      branch: "main"
+      working-directory: "src/GitHubActionsWebApi"
+      sln-project-path: "GitHubActionsWebApi.csproj"
+      dotnet-version: "8.0.x"
