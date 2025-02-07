@@ -61,7 +61,10 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore
-
+      
+      - name: Echo PROJECT_BASE_PATH
+        run: echo ${{ env.PROJECT_BASE_PATH }}
+        
     # - name: Build
     #  run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
 
