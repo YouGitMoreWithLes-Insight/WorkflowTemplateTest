@@ -30,7 +30,8 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     env:
-      PROJECT_BASE_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.sln-project-path }}"
+      PROJECT_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}"
+      PROJECT_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.sln-project-path }}"
       AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
       DOTNET_VERSION: ${{ inputs.dotnet-version }}
@@ -62,28 +63,31 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       
-      - name: Echo PROJECT_BASE_PATH
-        run: echo ${{ env.PROJECT_BASE_PATH }}
-        
-    # - name: Build
-    #  run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
+      - name: Echo PROJECT_ROOT_PATH
+        run: echo ${{ env.PROJECT_ROOT_PATH }}
+      
+      - name: Echo PROJECT_FULL_PATH
+        run: echo ${{ env.PROJECT_FULL_PATH }}
+            
+      - name: Build
+        run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
 
-    # - name: Test with the dotnet CLI
-    #  run: dotnet test --no-restore --results-directory "${{ env.PROJECT_BASE_PATH }}/TestResults-${{ matrix.dotnet-version }}" ../GitHubActionsWebApiTest/GitHubActionsWebApiTest.csproj
+      - name: Test with the dotnet CLI
+        run: dotnet test --no-restore --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }} ${{ env.PROJECT_FULL_PATH}}
 
-    # - name: Upload dotnet test results
-    #  uses: actions/upload-artifact@v4
-    #  with:
-    #   name: dotnet-test-results-${{ matrix.dotnet-version }}
-    #   path: '${{ env.PROJECT_BASE_PATH }}/TestResults-${{ matrix.dotnet-version }}'
-    #  # Use always() to always run this step to publish test results when there are test failures
-    #  if: ${{ always() }}
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results-${{ env.DOTNET_VERSION }}
+          path: '${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}'
+         # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
 
-    # - name: Publish the project
-    #  run: dotnet publish -c Release -o '${{ env.PROJECT_BASE_PATH }}/api-publish'
+      - name: Publish the project
+        run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
-    # - name: Upload build artifact
-    #  uses: actions/upload-artifact@v4
-    #  with:
-    #   name: api-function-package
-    #   path: '${{ env.PROJECT_BASE_PATH }}/api-publish/'
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-function-package
+          path: '${{ env.PROJECT_ROOT_PATH }}/api-publish/'
