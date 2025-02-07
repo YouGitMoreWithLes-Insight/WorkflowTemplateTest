@@ -37,7 +37,7 @@ jobs:
       PROJECT_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}"
       PROJECT_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.sln-project-path }}"
       # TEST_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}Test"
-      TEST_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.test-project-path }}"
+      TEST_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}Test/${{ inputs.test-project-path }}"
       AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
       DOTNET_VERSION: ${{ inputs.dotnet-version }}
