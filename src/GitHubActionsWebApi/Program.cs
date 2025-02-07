@@ -36,7 +36,7 @@ app.UseHttpsRedirection();
 //.WithName("GetWeatherForecast")
 //.WithOpenApi();
 
-//app.Run();
+app.Run();
 
 //record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 //{

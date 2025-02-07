@@ -66,7 +66,7 @@ jobs:
         id: gitversion
         uses: GitTools/actions/gitversion/execute@v0
 
-      - name: Install dependencies
+      - name: Dotnet restore
         run: dotnet restore
       
       - name: Echo PROJECT_ROOT_PATH
@@ -75,15 +75,12 @@ jobs:
       - name: Echo PROJECT_FULL_PATH
         run: echo ${{ env.PROJECT_FULL_PATH }}
             
-      - name: Build
+      - name: Dotnet build
         run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
-        
-      - name: Dir /home/runner/work/WorkflowTemplateTest/WorkflowTemplateTest/src/GitHubActionsWebApiTest/
-        run: ls -lah "/home/runner/work/WorkflowTemplateTest/WorkflowTemplateTest/src/GitHubActionsWebApiTest/"
 
-      - name: Test with the dotnet CLI
+      - name: Dotnet test
         if: ${{ inputs.test-project-path != null }}
-        run: dotnet test --no-restore --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }} ${{ env.TEST_FULL_PATH}}
+        run: dotnet test --no-restore --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}" "${{ env.TEST_FULL_PATH}}"
 
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v4
@@ -93,7 +90,7 @@ jobs:
          # Use always() to always run this step to publish test results when there are test failures
         if: ${{ inputs.test-project-path != null && always() }}
 
-      - name: Publish the project
+      - name: Dotnet publish
         run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
       - name: Upload build artifact
