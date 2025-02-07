@@ -47,7 +47,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           source-url: https://nuget.pkg.github.com/lmcwhirt-insight/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install GitVersion
         uses: GitTools/actions/gitversion/setup@v0
