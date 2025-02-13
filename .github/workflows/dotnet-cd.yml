@@ -41,6 +41,16 @@ jobs:
       - name: Unzip build archive
         run: unzip ./downloads/*.zip -d ./extracted
 
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}          
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+          environment: 'AzureCloud'
+
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
         with:
