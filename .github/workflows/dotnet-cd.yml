@@ -12,6 +12,8 @@ jobs:
   build-dotnet:
     name: Azure deployment
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     # defaults:
     #   run:
     #     working-directory: ${{ inputs.working-directory }}
