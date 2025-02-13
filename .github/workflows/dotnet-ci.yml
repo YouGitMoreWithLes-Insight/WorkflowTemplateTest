@@ -104,7 +104,7 @@ jobs:
 
       - name: Set archive file name environment variable
         run: |
-          echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')"
+          echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
           echo "ARCHIVE_FILE_NAME=" $ARCHIVE_FILE_NAME
           zip -v $ARCHIVE_FILE_NAME.zip '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
