@@ -70,6 +70,16 @@ jobs:
         id: gitversion
         uses: GitTools/actions/gitversion/execute@v0
 
+      - name: Format version number
+        id: version_number
+        run: |
+          VERSION_NUMBER=$(echo '${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}')
+          echo "VERSION_NUMBER=$VERSION_NUMBER"
+          echo "::set-output name=version_number::$VERSION_NUMBER"
+
+      - name: Echo version number
+        run: echo "VERSION_NUMBER=${{ steps.version_number.outputs.version_number }}"
+
       - name: Dotnet restore
         run: dotnet restore
 
