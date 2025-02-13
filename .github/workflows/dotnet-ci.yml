@@ -74,8 +74,8 @@ jobs:
         id: version_number
         run: |
           echo "VERSION_NUMBER=$(echo '${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}')" >> $GITHUB_ENV
-          echo "VERSION_NUMBER=$VERSION_NUMBER"
-          echo "version_number=$VERSION_NUMBER" >> $GITHUB_OUTPUT
+          echo "VERSION_NUMBER="$VERSION_NUMBER
+          echo "version_number="$VERSION_NUMBER >> $GITHUB_OUTPUT
 #          echo "::set-output name=version_number::$VERSION_NUMBER"
 
       - name: Echo version number
