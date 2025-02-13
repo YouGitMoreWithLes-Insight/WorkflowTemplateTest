@@ -26,5 +26,7 @@ jobs:
     needs: dotnet-build
     uses: ./.github/workflows/dotnet-cd.yml
     secrets: inherit
+    permissions:
+      id-token: write
     with:
       artifact-name: "dotnet-build-artifact"
