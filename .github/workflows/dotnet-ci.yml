@@ -44,7 +44,6 @@ jobs:
       AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
       DOTNET_VERSION: ${{ inputs.dotnet-version }}
-      # ARCHIVE_FILE_NAME: ${{ inputs.artifact-name }}
 
     steps:
       - name: Checkout
