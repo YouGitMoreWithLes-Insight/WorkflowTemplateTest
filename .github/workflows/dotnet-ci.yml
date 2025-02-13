@@ -73,11 +73,10 @@ jobs:
       - name: Dotnet restore
         run: dotnet restore
 
-      - name: Echo PROJECT_ROOT_PATH
-        run: echo ${{ env.PROJECT_ROOT_PATH }}
-
-      - name: Echo PROJECT_FULL_PATH
-        run: echo ${{ env.PROJECT_FULL_PATH }}
+      - name: Echo project paths
+        run: |
+          echo "PROJECT_ROOT_PATH="${{ env.PROJECT_ROOT_PATH }}
+          echo "PROJECT_FULL_PATH="${{ env.PROJECT_FULL_PATH }}
 
       - name: Dotnet build
         run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
@@ -85,6 +84,9 @@ jobs:
       - name: Dotnet test
         if: ${{ inputs.test-project-path != null }}
         run: dotnet test --no-restore --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}" "${{ env.TEST_FULL_PATH}}"
+
+      - name: asdfasd
+        run: ls -lha "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}"
 
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v4
