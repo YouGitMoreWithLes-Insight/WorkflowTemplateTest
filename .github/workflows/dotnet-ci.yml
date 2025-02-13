@@ -83,7 +83,7 @@ jobs:
 
       - name: Dotnet test
         if: ${{ inputs.test-project-path != null }}
-        run: dotnet test --no-restore --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}" "${{ env.TEST_FULL_PATH}}"
+        run: dotnet test --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}" "${{ env.TEST_FULL_PATH}}"
 
       - name: asdfasd
         run: ls -lha "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}"
