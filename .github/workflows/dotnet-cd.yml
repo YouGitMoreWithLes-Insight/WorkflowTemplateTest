@@ -39,7 +39,7 @@ jobs:
         run: ls -lah ./downloads
 
       - name: Unzip build archive
-        run: unzip ./downloads/dotnet-build-artifact.zip -d ./extracted
+        run: unzip ./downloads/*.zip -d ./extracted
 
       - name: Dir downloads
         run: ls -lah ./extracted
