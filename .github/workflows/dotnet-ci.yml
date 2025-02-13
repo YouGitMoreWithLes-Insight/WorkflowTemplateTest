@@ -101,7 +101,7 @@ jobs:
 
       - name: Zip archive file
         run: |
-          zip -v $ARCHIVE_FILE_NAME.zip '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+          zip -v $ARCHIVE_FILE_NAME.zip ${{ env.PROJECT_ROOT_PATH }}/api-publish/*
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

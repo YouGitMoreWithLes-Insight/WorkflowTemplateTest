@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-dotnet:
-    name: Build dotnet
+    name: Azure deployment
     runs-on: ubuntu-latest
     # defaults:
     #   run:
