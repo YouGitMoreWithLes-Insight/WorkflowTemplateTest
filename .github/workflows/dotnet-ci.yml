@@ -25,6 +25,10 @@ on:
         type: string
         default: "8.0.x"
         description: "The version of dotnet to use, defaults to 8.0.x"
+      artifact-name:
+        required: false
+        type: string
+        description: "The name of the published artifact"
 
 jobs:
   build-dotnet:
@@ -36,17 +40,17 @@ jobs:
     env:
       PROJECT_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}"
       PROJECT_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.sln-project-path }}"
-      # TEST_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}Test"
       TEST_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}Test/${{ inputs.test-project-path }}"
       AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
       DOTNET_VERSION: ${{ inputs.dotnet-version }}
+      ARCHIVE_FILE_NAME: ${{ inputs.artifact-name }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-         fetch-depth: 0
+          fetch-depth: 0
 
       - name: Setup dotnet ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
@@ -59,8 +63,8 @@ jobs:
       - name: Install GitVersion
         uses: GitTools/actions/gitversion/setup@v0
         with:
-            versionSpec: "5.x"
-            preferLatestVersion: true
+          versionSpec: "5.x"
+          preferLatestVersion: true
 
       - name: Determine version
         id: gitversion
@@ -68,13 +72,13 @@ jobs:
 
       - name: Dotnet restore
         run: dotnet restore
-      
+
       - name: Echo PROJECT_ROOT_PATH
         run: echo ${{ env.PROJECT_ROOT_PATH }}
-      
+
       - name: Echo PROJECT_FULL_PATH
         run: echo ${{ env.PROJECT_FULL_PATH }}
-            
+
       - name: Dotnet build
         run: dotnet build --no-restore --configuration Release /p:Version=${{ format('{0}.{1}.{2}', steps.gitversion.outputs.major, steps.gitversion.outputs.minor, steps.gitversion.outputs.buildMetaData) }}
 
@@ -87,11 +91,24 @@ jobs:
         with:
           name: dotnet-test-results-${{ env.DOTNET_VERSION }}
           path: '${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}'
-         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ inputs.test-project-path != null && always() }}
 
       - name: Dotnet publish
         run: dotnet publish -c Release -o '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+
+      - name: Dir - ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+        run: ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+
+      - name: Set archive filename
+        run: echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+        if: ${{ inputs.artifact-name != '' && inputs.artifact-name }}
+
+      - name: Zip API files
+        run: |
+          zip -v '${{ env.PROJECT_ROOT_PATH }}/${{ env.ARCHIVE_FILE_NAME }}.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+
+      - name: Dir - ls -la ${{ env.PROJECT_ROOT_PATH }}
+        run: ls -la ${{ env.PROJECT_ROOT_PATH }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
