@@ -102,14 +102,23 @@ jobs:
       - name: Dir - ls -la ${{ env.PROJECT_ROOT_PATH }}
         run: ls -la ${{ env.PROJECT_ROOT_PATH }}
 
-      - name: Zip API files
+      - name: Set archive file name environment variable
         run: |
-          echo "ARCHIVE_FILE_NAME=$(echo '${{ env.PROJECT_ROOT_PATH }}/${{ inputs.artifact-name || inputs.sln-project-path  }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
-          echo $ARCHIVE_FILE_NAME
+          echo "ARCHIVE_FILE_NAME=$(echo '${{ env.PROJECT_ROOT_PATH }}/${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+          echo "ARCHIVE_FILE_NAME=${{ env.ARCHIVE_FILE_NAME }}"
           zip -v '$ARCHIVE_FILE_NAME.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+
+      # - name: Zip API files
+      #   run: |
+      #     echo "ARCHIVE_FILE_NAME=$(echo '${{ env.PROJECT_ROOT_PATH }}/${{ inputs.artifact-name || inputs.sln-project-path  }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+      #     echo $ARCHIVE_FILE_NAME
+      #     zip -v '$ARCHIVE_FILE_NAME.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
       - name: Dir - ls -la ${{ env.PROJECT_ROOT_PATH }}
         run: ls -la ${{ env.PROJECT_ROOT_PATH }}
+
+      - name: Dir - ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+        run: ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
