@@ -2,6 +2,11 @@ name: Dotnet CD
 on:
   workflow_call:
     inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "The environment to deploy to"
       artifact-name:
         required: false
         type: string
@@ -12,18 +17,11 @@ jobs:
   build-dotnet:
     name: Azure deployment
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     permissions:
       id-token: write
-    # defaults:
-    #   run:
-    #     working-directory: ${{ inputs.working-directory }}
     env:
-    #   PROJECT_ROOT_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}"
-    #   PROJECT_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}/${{ inputs.sln-project-path }}"
-    #   TEST_FULL_PATH: "${{ github.workspace }}/${{ inputs.working-directory }}Test/${{ inputs.test-project-path }}"
-    #   AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
-    #   DOTNET_VERSION: ${{ inputs.dotnet-version }}
 
     steps:
       - name: Checkout
