@@ -99,12 +99,13 @@ jobs:
       - name: Dir - ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
         run: ls -la '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
-      - name: Set archive filename
-        run: echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
-        if: ${{ inputs.artifact-name != '' && inputs.artifact-name }}
+      # - name: Set archive filename
+      #   run: echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.sln-project-path }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+      #   if: ${{ inputs.artifact-name != '' && inputs.artifact-name }}
 
       - name: Zip API files
         run: |
+          echo "ARCHIVE_FILE_NAME=$(echo '${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path  }}' | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
           zip -v '${{ env.PROJECT_ROOT_PATH }}/${{ env.ARCHIVE_FILE_NAME }}.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
       - name: Dir - ls -la ${{ env.PROJECT_ROOT_PATH }}
