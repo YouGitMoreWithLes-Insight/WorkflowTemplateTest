@@ -44,7 +44,7 @@ jobs:
       AZURE_FUNCTIONAPP_NAME: "ghal-dev-fa"
       AZURE_WEBAPP_NAME: "ghal-dev-wa"
       DOTNET_VERSION: ${{ inputs.dotnet-version }}
-      ARCHIVE_FILE_NAME: ${{ inputs.artifact-name }}
+      # ARCHIVE_FILE_NAME: ${{ inputs.artifact-name }}
 
     steps:
       - name: Checkout
@@ -106,8 +106,8 @@ jobs:
         run: |
           echo "ARCHIVE_FILE_NAME=$(echo '${{ env.PROJECT_ROOT_PATH }}/${{ inputs.artifact-name != '' && inputs.artifact-name || inputs.sln-project-path }}' | sed 's/\.[^.]*$//')"S
           echo "ARCHIVE_FILE_NAME=${{ env.ARCHIVE_FILE_NAME }}"
-          echo "ARCHIVE_FILE_NAME=$ARCHIVE_FILE_NAME"
-          zip -v '$ARCHIVE_FILE_NAME.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
+          echo "ARCHIVE_FILE_NAME=\$ARCHIVE_FILE_NAME"
+          zip -v \$ARCHIVE_FILE_NAME'.zip' '${{ env.PROJECT_ROOT_PATH }}/api-publish'
 
       # - name: Zip API files
       #   run: |
