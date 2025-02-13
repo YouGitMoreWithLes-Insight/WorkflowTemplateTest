@@ -83,9 +83,9 @@ jobs:
 
       - name: Dotnet test
         if: ${{ inputs.test-project-path != null }}
-        run: dotnet test --results-directory "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}" "${{ env.TEST_FULL_PATH}}"
+        run: dotnet test --logger "trx;LogFileName=${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}/test-results.trx" "${{ env.TEST_FULL_PATH}}"
 
-      - name: asdfasd
+      - name: Dir test results
         run: ls -lha "${{ env.PROJECT_ROOT_PATH }}/TestResults-${{ env.DOTNET_VERSION }}"
 
       - name: Upload dotnet test results
