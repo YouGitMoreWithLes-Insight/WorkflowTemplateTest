@@ -26,7 +26,7 @@ jobs:
     needs: dotnet-build
     uses: ./.github/workflows/dotnet-cd.yml
     with:
-      environment: ${{ matrix.environment }}
+      environment: "dev" # ${{ matrix.environment }}
       artifact-name: "dotnet-build-artifact"
     secrets: inherit
     permissions:
