@@ -7,3 +7,8 @@ provider "azurerm" {
     }
   }
 }
+
+provider "github" {
+  token = ""
+  owner = "YouGitMoreWithLes-Insight"
+}

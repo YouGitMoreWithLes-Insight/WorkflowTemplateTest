@@ -25,6 +25,12 @@ jobs:
     name: Azure deploy workflow
     needs: dotnet-build
     uses: ./.github/workflows/dotnet-cd.yml
-    secrets: inherit
     with:
+      environment: ${{ matrix.environment }}
       artifact-name: "dotnet-build-artifact"
+    secrets: inherit
+    permissions:
+      id-token: write
+    # strategy:
+    #   matrix:
+    #     environment: ["dev", "qa", "prod"]
