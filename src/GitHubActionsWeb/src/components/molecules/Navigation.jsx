@@ -1,13 +1,14 @@
 import React from 'react';
 import NavigationLink from '../atoms/NavigationLink';
 
-const Navigation = () => {
+const Navigation = ({ setCurrentSection }) => {
   return (
     <nav>
       <ul>
-        <NavigationLink href="/">Home</NavigationLink>
-        <NavigationLink href="/pages/projects.html">Projects</NavigationLink>
-        <NavigationLink href="/pages/contact.html">Contact</NavigationLink>
+        <NavigationLink onClick={() => setCurrentSection('introduction')}>Home</NavigationLink>
+        <NavigationLink onClick={() => setCurrentSection('skills')}>Skills</NavigationLink>
+        <NavigationLink onClick={() => setCurrentSection('projects')}>Projects</NavigationLink>
+        <NavigationLink onClick={() => setCurrentSection('contact')}>Contact</NavigationLink>
       </ul>
     </nav>
   );

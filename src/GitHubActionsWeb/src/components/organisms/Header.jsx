@@ -2,11 +2,11 @@ import React from 'react';
 import Navigation from '../molecules/Navigation';
 import NavigationLink from '../atoms/NavigationLink';
 
-const Header = () => {
+const Header = ({ setCurrentSection }) => {
   return (
     <header style={{ backgroundColor: 'transparent' }}>
       <h1>You Get More With Les!</h1>
-      <Navigation />
+      <Navigation setCurrentSection={setCurrentSection} />
     </header>
   );
 };
