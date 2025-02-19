@@ -1,4 +1,5 @@
-name: Dotnet CD
+name: Build and Deploy React App
+
 on:
   workflow_call:
     inputs:
@@ -14,21 +15,15 @@ on:
         description: "The name of the published artifact to be deployed"
 
 jobs:
-  build-dotnet:
-    name: Azure deployment
+  deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     permissions:
       id-token: write
     env:
-      AZURE_WEBAPP_NAME: "ghal-dev-wa"
+      AZURE_WEBAPP_NAME: "ghal-dev-swa"
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
@@ -51,14 +46,8 @@ jobs:
           enable-AzPSSession: true
           environment: 'AzureCloud'
 
-      - name: Get web app publish profile
-        run: |
-          echo "PUBLISH_PROFILE=$(az webapp deployment list-publishing-profiles -g 'ghal-${{ inputs.environment }}-rg' -n 'ghal-${{ inputs.environment }}-wa' --xml)" >> $GITHUB_OUTPUT
-        id: getPublishProfile
-
-      - name: 'Run Azure webapp deploy action using publish profile credentials'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ steps.getPublishProfile.outputs.PUBLISH_PROFILE }}
           package: './extracted'

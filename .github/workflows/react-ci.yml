@@ -14,7 +14,7 @@ on:
       - 'src/GitHubActionsWeb/**'
 
 jobs:
-  build:
+  react-build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,15 +34,6 @@ jobs:
 
       - name: Build the React app
         run: npm run build
-      
-      - name: Directory location
-        run: pwd
-      
-      - name: Directory listing
-        run: ls -lah
-      
-      - name: Directory listing
-        run: ls -lah ./dist
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
@@ -50,22 +41,13 @@ jobs:
           name: published-web-app
           path: src/GitHubActionsWeb/dist
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-
-  #   steps:
-  #     - name: Download build files
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: build
-  #         path: build
-
-  #     - name: Deploy to Azure Static Web Apps
-  #       uses: Azure/static-web-apps-deploy@v1
-  #       with:
-  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-  #         repo_token: ${{ secrets.GITHUB_TOKEN }}
-  #         action: "upload"
-  #         app_location: "/"
-  #         output_location: "build"
+  azure-deploy:
+    name: Azure deploy workflow
+    needs: react-build
+    uses: ./.github/workflows/react-cd.yml
+    with:
+      environment: "dev" # ${{ matrix.environment }}
+      artifact-name: "published-web-app"
+    secrets: inherit
+    permissions:
+      id-token: write
