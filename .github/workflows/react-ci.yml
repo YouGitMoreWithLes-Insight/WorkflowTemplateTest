@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'src/GithubActionsWeb/**'
+      - 'src/GitHubActionsWeb/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'src/GithubActionsWeb/**'
+      - 'src/GitHubActionsWeb/**'
 
 jobs:
   build:
