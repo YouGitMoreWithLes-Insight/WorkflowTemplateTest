@@ -3,10 +3,16 @@ name: dotnet-test
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches:
+      - main
+    paths:
+      - 'src/GitHubActionsWebApi/**'
   pull_request:
-    branches: ["main"]
-
+    branches:
+      - main
+    paths:
+      - 'src/GitHubActionsWebApi/**'
+    
 permissions: read-all
 
 jobs:
