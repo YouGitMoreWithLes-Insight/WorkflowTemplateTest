@@ -29,7 +29,7 @@ function App() {
     <div>
       <Header setCurrentSection={setCurrentSection} />
       <div id="main-div" className='main-div'>
-        <main style={{ width: '66.67%', margin: '0 auto' }}>
+        <main style={{ width: '70%', margin: '0 auto' }}>
           {renderSection()}
         </main>
       </div>
