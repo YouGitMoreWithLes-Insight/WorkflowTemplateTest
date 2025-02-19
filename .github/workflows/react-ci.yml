@@ -35,6 +35,9 @@ jobs:
       - name: Build the React app
         run: npm run build
       
+      - name: Directory location
+        run: pwd
+      
       - name: Directory listing
         run: ls -lah
       
