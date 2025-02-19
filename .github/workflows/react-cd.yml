@@ -21,7 +21,7 @@ jobs:
     permissions:
       id-token: write
     env:
-      AZURE_WEBAPP_NAME: "ghaldevsa"
+      AZURE_WEBAPP_NAME: "ghaldevswasa"
 
     steps:
       - name: Download build artifact
