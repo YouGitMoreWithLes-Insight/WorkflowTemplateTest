@@ -44,5 +44,5 @@ jobs:
         run: |
           az storage blob upload-batch \
             --account-name ${{ env.AZURE_WEBAPP_NAME }} \
-            --destination $web \
+            --destination '$web' \
             --source ./downloads
