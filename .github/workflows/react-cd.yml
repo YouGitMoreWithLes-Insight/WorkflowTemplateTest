@@ -21,7 +21,7 @@ jobs:
     permissions:
       id-token: write
     env:
-      AZURE_WEBAPP_NAME: "ghal-dev-swa"
+      AZURE_WEBAPP_NAME: "ghaldevsa"
 
     steps:
       - name: Download build artifact
@@ -40,8 +40,9 @@ jobs:
           enable-AzPSSession: true
           environment: 'AzureCloud'
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: './downloads'
+      - name: Upload to Azure Storage Account
+        run: |
+          az storage blob upload-batch \
+            --account-name ${{ env.AZURE_WEBAPP_NAME }} \
+            --destination '$web' \
+            --source './downloads'
