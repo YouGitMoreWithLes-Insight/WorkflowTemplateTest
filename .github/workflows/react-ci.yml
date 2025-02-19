@@ -33,6 +33,9 @@ jobs:
 
       - name: Build the React app
         run: npm run build
+      
+      - name: Directory listing
+        run: ls -lah
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
