@@ -11,7 +11,7 @@ on:
       artifact-name:
         required: false
         type: string
-        default: "dotnet-build-artifact"
+        default: "published-web-app"
         description: "The name of the published artifact to be deployed"
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: dotnet-build-artifact
+          name: ${{ inputs.artifact-name }}
           path: './downloads'
 
       - name: Dir downloads
