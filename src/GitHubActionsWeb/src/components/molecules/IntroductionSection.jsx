@@ -9,7 +9,7 @@ const IntroductionSection = () => {
         <h3>Software Architect/Engineer</h3>
         <img src={ProfilePic} alt="introduction" className="profile" />
         <p>
-          "My story... it was never easy for me, I was born a poor black child..." <br /> <br />- Steve Martin, The Jerk
+          "My story... it was never easy for me. I was born a poor black child..." <br /> <br />- Steve Martin, The Jerk
         </p>
       </div>
       <div className="content-right"><p>I did grow up poor, misguided, and aimless. I didn't know what I was going to do with my life. 
