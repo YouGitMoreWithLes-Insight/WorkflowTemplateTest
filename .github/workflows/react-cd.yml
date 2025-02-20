@@ -40,9 +40,18 @@ jobs:
           enable-AzPSSession: true
           environment: 'AzureCloud'
 
+      - name: Delete existing files in Azure Storage Account
+        run: |
+          az storage blob delete-batch \
+            --account-name ${{ env.AZURE_WEBAPP_NAME }} \
+            --source '$web' \
+            --pattern '*' \
+            --delete-snapshots include
+
       - name: Upload to Azure Storage Account
         run: |
           az storage blob upload-batch \
             --account-name ${{ env.AZURE_WEBAPP_NAME }} \
             --destination '$web' \
-            --source ./downloads
+            --source ./downloads \
+            --overwrite
