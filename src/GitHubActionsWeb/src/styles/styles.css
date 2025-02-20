@@ -1,9 +1,15 @@
+html {
+  height: 100%;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-image: url('/src/assets/images/background.jpg');
   background-size: cover;
+  display: block;
+  height: 100%;
 }
 
 header {
@@ -44,26 +50,6 @@ section img {
   margin-bottom: 1rem;
 }
 
-.project {
-  background-color: #fff;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.main-div {
-  margin: 0% 5% 0% 5%;
-  display: flexbox;
-  background-image: url('/src/assets/images/matrix.jpg');
-  background-size: contain;
-}
-
-.profile {
-  width: 200px;
-  height: 200px;
-}
-
 footer {
   color: #fff;
   position: fixed;
@@ -100,4 +86,44 @@ button {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.project {
+  background-color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.root-div {
+  display: cover;
+  height: 80%;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.content-div {
+  margin: 0% 5% 0% 5%;
+  display: cover;
+  background-image: url('/src/assets/images/matrix.jpg');
+  background-size: contain;
+  height: 80%;
+  width: 90%;
+}
+
+.profile {
+  width: 200px;
+  height: 200px;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity .5s ease-out;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity .5s ease-in;
 }

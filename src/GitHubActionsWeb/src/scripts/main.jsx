@@ -1,5 +1,5 @@
 import '../styles/styles.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import Header from '../components/organisms/Header';
 import Footer from '../components/organisms/Footer';
@@ -10,6 +10,18 @@ import ContactSection from '../components/molecules/ContactSection';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('introduction');
+  const [fade, setFade] = useState('fade-in');
+
+  useEffect(() => {
+    setFade('fade-in');
+  }, [currentSection]);
+
+  const handleSectionChange = (section) => {
+    setFade('fade-out');
+    setTimeout(() => {
+      setCurrentSection(section);
+    }, 500);
+  };
 
   const renderSection = () => {
     switch (currentSection) {
@@ -26,10 +38,10 @@ function App() {
   };
 
   return (
-    <div>
-      <Header setCurrentSection={setCurrentSection} />
-      <div id="main-div" className='main-div'>
-        <main style={{ width: '70%', margin: '0 auto' }}>
+    <div className='main-div'>
+      <Header setCurrentSection={handleSectionChange} />
+      <div id="content-div" className={`content-div ${fade}`}>
+        <main style={{ width: '60%', height: '80%', margin: '0 auto' }}>
           {renderSection()}
         </main>
       </div>
