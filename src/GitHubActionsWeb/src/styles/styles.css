@@ -63,7 +63,7 @@ label {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
-  width: 30px;
+  /* width: 30px; */
 }
 
 input {
@@ -74,7 +74,7 @@ input {
 
 textarea {
   width: 100%;
-  height: 100px;
+  height: 80px;
   margin-top: 1rem;
 }
 
@@ -113,9 +113,10 @@ button {
   width: 90%;
 }
 
-.profile {
+section img {
   width: 200px;
   height: 200px;
+  /* margin-bottom: 1rem; */
 }
 
 .fade-out {
@@ -127,3 +128,17 @@ button {
   opacity: 1;
   transition: opacity .5s ease-in;
 }
+
+.content-section {
+  display: flex;
+  align-items: flex-start;
+}
+
+.content-left {
+  margin-right: 50px;
+  width: 30%
+}
+
+.content-right {
+  margin-top: 12%;
+} 
