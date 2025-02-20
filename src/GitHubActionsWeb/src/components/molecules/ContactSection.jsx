@@ -1,11 +1,12 @@
 import React from "react"
+import contact from "../../assets/images/contact.png"
 
 const ContactSection = () => {
   return (
     <section id="contact" className="content-section">
       <div className="content-left">
         <h2>Contact me</h2>
-        <img src="/src/assets/images/contact.png" alt="Contact" />
+        <img src={contact} alt="Contact" />
       </div>
       <div className="content-right">
         <form id="contact-form">

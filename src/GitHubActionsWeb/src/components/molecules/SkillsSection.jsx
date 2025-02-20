@@ -1,11 +1,12 @@
 import React from "react"
+import skills from "../../assets/images/skills.png"
 
 const SkillsSection = () => {
   return (
     <section id="skills" className="content-section">
       <div className="content-left">
         <h2>My Skills</h2>
-        <img src="/src/assets/images/skills.png" alt="Engineering Skills" />
+        <img src={skills} alt="Engineering Skills" />
       </div>
       <div className="content-right">
         <ul>
