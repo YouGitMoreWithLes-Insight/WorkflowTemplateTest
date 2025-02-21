@@ -142,3 +142,11 @@ section img {
 .content-right {
   margin-top: 12%;
 } 
+
+.content-right-top {
+  margin-top: 0%;
+} 
+
+.no-bullet {
+  list-style-type: none;
+}
