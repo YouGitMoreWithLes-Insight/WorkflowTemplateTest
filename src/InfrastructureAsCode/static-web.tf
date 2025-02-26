@@ -11,33 +11,75 @@ resource "azurerm_storage_account" "static_website" {
   }
 }
 
-resource "azurerm_cdn_profile" "cdn_profile" {
-  name                = format("%s%s", local.short-name, "cdnprofile")
-  location            = "westus"
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  sku                 = "Standard_Microsoft"
+resource "azurerm_cdn_frontdoor_profile" "afd_profile" {
+  name                      = format("%s%s", local.short-name, "cdnprofile")
+  resource_group_name         = azurerm_resource_group.deployment-rg[0].name
+  sku_name                    = "Standard_AzureFrontDoor"
 }
 
-resource "azurerm_cdn_endpoint" "cdn_endpoint" {
-  name                = format("%s%s", local.short-name, "cdnendpoint")
-  profile_name        = azurerm_cdn_profile.cdn_profile.name
-  location            = "westus"
-  resource_group_name = azurerm_resource_group.deployment-rg[0].name
-  origin_host_header  = azurerm_storage_account.static_website.primary_web_host
-  origin {
-    name      = "storageorigin"
-    host_name = azurerm_storage_account.static_website.primary_web_host
+resource "azurerm_cdn_frontdoor_endpoint" "afd_endpoint" {
+  name                     = format("%s%s", local.short-name, "cdnendpoint")
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.afd_profile.id
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "afd_origin_group" {
+  name                     = format("%s%s", local.short-name, "cdn-og")
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.afd_profile.id
+  session_affinity_enabled = false
+
+
+  health_probe {
+    protocol            = "Https"
+    interval_in_seconds = 60
+    request_type        = "GET"
+    path                = "/"
+  }
+
+  load_balancing {
+    
   }
 }
 
-resource "azurerm_cdn_endpoint_custom_domain" "custom_domain" {
-  name                     = "www-lesm-me"
-  cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
-  host_name                = "www.lesm.me"
+resource "azurerm_cdn_frontdoor_origin" "afd_origin" {
+  name                            = format("%s%s", local.short-name, "cdn-origin")
+  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.afd_origin_group.id
   
-  cdn_managed_https {
-    certificate_type = "Dedicated"
-    tls_version = "TLS12"
-    protocol_type = "ServerNameIndication"
+  host_name                       = azurerm_storage_account.static_website.primary_web_host
+  origin_host_header              = azurerm_storage_account.static_website.primary_web_host
+  priority                        = 1
+  weight                          = 1000
+  certificate_name_check_enabled  = false
+}
+
+resource "azurerm_cdn_frontdoor_route" "afd_route" {
+  depends_on = [ 
+    azurerm_cdn_frontdoor_origin_group.afd_origin_group,
+    azurerm_cdn_frontdoor_origin.afd_origin
+    ]
+
+  name                     = "ghaldev-route"
+  cdn_frontdoor_endpoint_id = azurerm_cdn_frontdoor_endpoint.afd_endpoint.id
+  cdn_frontdoor_origin_ids = [ azurerm_cdn_frontdoor_origin.afd_origin.id ]
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.afd_origin_group.id
+  enabled                  = true
+  patterns_to_match        = ["/*"]
+  supported_protocols      = ["Http", "Https"]
+  forwarding_protocol    = "HttpsOnly"
+  https_redirect_enabled = true
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "afd_custom_domain" {
+  name                     = format("%s%s", local.short-name, "customdomain")
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.afd_profile.id
+  host_name                = "www.lesm.me"
+
+  tls {
+    certificate_type    = "ManagedCertificate"
   }
 }
+
+# resource "azurerm_cdn_frontdoor_custom_domain_association" "afd_custom_domain_association" {
+#   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.afd_custom_domain.id
+#   cdn_frontdoor_route_ids = [ azurerm_cdn_frontdoor_route.afd_route.id ]
+  
+# }
